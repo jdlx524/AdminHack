@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reddit Posting Helper</title>
+    <script src="/static/js/search.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/search.css">
+  </head>
+  <body>
+    <h1><img src="../static/icons/icon4.png" style="width: 400px; height: 100px;" class="icon"></h1>
+    <form onsubmit="searchPosts(event)">
+      <input type="text" id="searchTerm" placeholder="Input Query">
+      <input type="text" id="TopN" placeholder="Top K Value">
+      <button id ="submit" type="submit">Search</button>
+      <button id="clear" class = "clear" onclick="clearInput()">Clear</button>
+    </form>
+    <div id="suggestedTags"></div>
+    <div id="results"></div>
+  </body>
+  
+</html>

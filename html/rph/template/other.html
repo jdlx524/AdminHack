@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reddit Posting Helper</title>
+    <style>
+      /* Add your modern art design styles here */
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color:whitesmoke;
+      }
+      input {
+        height: 40px;
+        width: 330px;
+        padding-left: 10px;
+        background-color: #eee;
+        border-radius: 4px 0 0 4px;
+        border: none;
+        outline: none;
+      }
+      button{
+        height: 40px;
+        width: 110px;
+        background-color: #FF6F2A;
+        border: none;
+        border-radius: 0 4px 4px 0;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+        outline: none;
+      }
+      form{
+        font-size:0;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centers the image and search bar horizontally */
+      }
+      .clear {
+        top:50%;
+        background-color:#fff;
+        color: #0a0a23;
+        border:none;
+        border-radius:5px;
+      }
+      #results {
+        margin-top: 20px;
+        width: 80%;
+        max-width: 80%;
+        max-height: 100%;
+        background-color:white;
+        border-radius: 15px;
+      }
+      .post {
+        border: 1px solid #ccc;
+        border-radius: 15px;
+        padding: 10px;
+        margin: 10px;
+        cursor: pointer;
+      }
+      .post:hover {
+        background-color: #e6dbdb;
+      }
+      .icon {
+        margin-bottom: 20px; /* Adds space below the image */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><img src="../static/icons/icon4.png" style="width: 400px; height: 100px;" class="icon"></h1>
+
+      <form onsubmit="searchPosts(event)">
+        <input type="text" id="searchTerm" placeholder="Post Here">
+        <button id ="submit" type="submit">Search</button>
+        <button id="clear" class = "clear" onclick="clearInput()">Clear</button>
+      </form>
+   </div>
+    <div id="results"></div>
+    
+    <!-- Add your JavaScript code here
+    CSS: #Result overflow-y: scroll; -->
+    <script>
+      function clearInput(){
+        document.getElementById('searchTerm').value = "";
+      }
+      function searchPosts(event) {
+        event.preventDefault();
+        const searchTerm = document.getElementById('searchTerm').value;
+        // Call API to get related posts from Reddit
+        fetch(`https://www.reddit.com/search.json?q=${searchTerm}&sort=new`)
+          .then(response => response.json())
+          .then(data => displayResults(data.data.children))
+          .catch(error => console.log(error));
+      }
+      
+      function displayResults(posts) {
+        const results = document.getElementById('results');
+        results.innerHTML = '';
+        posts.forEach(post => {
+          const postDiv = document.createElement('div');
+          postDiv.classList.add('post');
+          postDiv.innerHTML = `<h2>${post.data.title}</h2><p>${post.data.selftext}</p>`;
+          postDiv.addEventListener('click', () => {
+            window.location.href = `https://www.reddit.com${post.data.permalink}`;
+          });
+          results.appendChild(postDiv);
+        });
+      }
+    </script>
+  </body>
+</html>
